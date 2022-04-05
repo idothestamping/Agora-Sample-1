@@ -46,11 +46,29 @@ $("#join-form").submit(async function (e) {
     console.error(error);
   } finally {
     $("#leave").attr("disabled", false);
+    $("#enable-beauty").attr("disabled", false);
+    $("#disable-beauty").attr("disabled", true);
   }
 })
 
 $("#leave").click(function (e) {
   leave();
+})
+
+$("#enable-beauty").click(async function (e) {
+  // enable beauty effect
+  await localTracks.videoTrack.setBeautyEffect(true, { lighteningLevel: 0.5, rednessLevel: 0.5, smoothnessLevel: 0.5 });
+  console.log("enable beauty success");
+  $("#enable-beauty").attr("disabled", true);
+  $("#disable-beauty").attr("disabled", false);
+})
+
+$("#disable-beauty").click(async function (e) {
+  // disable beauty effect
+  await localTracks.videoTrack.setBeautyEffect(false);
+  console.log("disable beauty success");
+  $("#enable-beauty").attr("disabled", false);
+  $("#disable-beauty").attr("disabled", true);
 })
 
 async function join() {
@@ -97,6 +115,8 @@ async function leave() {
   $("#local-player-name").text("");
   $("#join").attr("disabled", false);
   $("#leave").attr("disabled", true);
+  $("#enable-beauty").attr("disabled", true);
+  $("#disable-beauty").attr("disabled", true);
   console.log("client leaves channel success");
 }
 
